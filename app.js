@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const Campground = require("./models/campground");
 
@@ -17,14 +18,18 @@ db.once("open", () => {
 });
 const app = express();
 
+//Engine for views layouts
+app.engine("ejs", ejsMate);
+
 // Settings for views to be rendered using ejs
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+// Will be used on every request
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-//Sets the paths for the different views being built
+// Sets the paths for the different views being built
 app.get("/", (req, res) => {
   res.render("home");
 });
